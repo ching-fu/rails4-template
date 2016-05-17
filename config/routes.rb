@@ -1,5 +1,10 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
+
+  # get '/', to:'sites#show', constraints: { subdomain:"abc"}
+  # get '/test/:id', to: "sites#show", constraints: { subdomain:"abc"}
+
+
   mount Sidekiq::Web => '/sidekiq'
 
   devise_for :users
@@ -8,7 +13,9 @@ Rails.application.routes.draw do
   Setting.omniauth.providers.keys.each do |provider|
     get "/authorizations/#{provider}", as: "auth_#{provider}"
   end
-
+  constraints(SubDomain) do
+    get '/', to: 'sites#show'
+  end
   root to: "base#index"
   get '/robots.txt', to: "base#robots", defaults: { format: "text" }
 
@@ -23,5 +30,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # constraints subdomain: 'abc' do
+  # resources :sites, only: [:show, :edit]
+  # end
+  # resources :sites, only: [:show, :edit], constraints: { subdomain:"abc"}
   resources :sites, only: [:show, :edit]
+
 end
