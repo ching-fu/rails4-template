@@ -14,6 +14,9 @@
 class SitesController < ApplicationController
   before_action :find_site
   def show
+  	unless @site
+		render file: "#{Rails.root}/public/404", status: 404
+	end
   end
 
   def edit
@@ -30,6 +33,10 @@ class SitesController < ApplicationController
   private
 
   def find_site
-    @site = Site.find(params[:id])
+  	if params[:id].present?
+	    @site = Site.find(params[:id])
+	elsif request.subdomain.present?	
+	    @site=Site.find_by_subdomain(request.subdomain)
+	end
   end
 end
