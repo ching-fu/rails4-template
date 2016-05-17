@@ -12,25 +12,10 @@
 #
 
 class SitesController < ApplicationController
-  before_action :find_site, :except => [:unmatch]
-  def unmatch
-  	puts "not match..."
-  end
+  before_action :find_site
   def show
-
-  	if @site
-	  	puts 'in show...'+params[:id].to_s
-	elsif @subsite
-		@site=@subsite
-	else
-	  # 	unless params[:id].present?
-	  # 		unless request.subdomain.present?
-			# 	redirect_to "base#index"
-			# else
-				render file: "#{Rails.root}/public/404"				
-			# end
-		# end
-
+  	unless @site
+		render file: "#{Rails.root}/public/404", status: 404
 	end
   end
 
@@ -40,14 +25,10 @@ class SitesController < ApplicationController
   private
 
   def find_site
-  	puts 'find_site running'
-  	puts request.subdomain.present?
   	if params[:id].present?
 	    @site = Site.find(params[:id])
-	# elsif params[:subdomain].present?
-	elsif request.subdomain.present?		
-	    puts 'find_site by subdomain'
-	    @subsite=Site.find_by_subdomain(request.subdomain)
+	elsif request.subdomain.present?	
+	    @site=Site.find_by_subdomain(request.subdomain)
 	end
   end
 end

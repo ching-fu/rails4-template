@@ -1,10 +1,5 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
-
-  # get '/', to:'sites#show', constraints: { subdomain:"abc"}
-  # get '/test/:id', to: "sites#show", constraints: { subdomain:"abc"}
-
-
   mount Sidekiq::Web => '/sidekiq'
 
   devise_for :users
@@ -29,11 +24,5 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  # constraints subdomain: 'abc' do
-  # resources :sites, only: [:show, :edit]
-  # end
-  # resources :sites, only: [:show, :edit], constraints: { subdomain:"abc"}
   resources :sites, only: [:show, :edit]
-
 end
