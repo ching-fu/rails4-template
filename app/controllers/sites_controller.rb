@@ -17,6 +17,14 @@ class SitesController < ApplicationController
   end
 
   def edit
+  	puts 'into edit '+params[:id].to_s+" "+params[:area].to_s
+  	I18n.locale =I18n.default_locale
+  	if params[:area].present?
+		if I18n.available_locales.include?( params[:area].to_sym )
+	  		I18n.locale =params[:area]
+  			@area=params[:area]
+  		end
+   	end
   end
 
   private

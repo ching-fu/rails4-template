@@ -24,4 +24,5 @@ Rails.application.routes.draw do
   end
 
   resources :sites, only: [:show, :edit]
+  get '/:area/sites/:id/edit', to: 'sites#edit'
 end
