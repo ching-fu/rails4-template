@@ -9,7 +9,9 @@ Rails.application.routes.draw do
     get "/authorizations/#{provider}", as: "auth_#{provider}"
   end
 
-  root to: "base#index"
+  root to: "sites#show"
+  # root to: "base#index"
+
   get '/robots.txt', to: "base#robots", defaults: { format: "text" }
 
   namespace :admin do
@@ -24,4 +26,5 @@ Rails.application.routes.draw do
   end
 
   resources :sites, only: [:show, :edit]
+  get '*unmatch', to: 'sites#show'
 end
